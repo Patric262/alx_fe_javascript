@@ -61,3 +61,18 @@ function createAddQuoteForm() {
     document.body.insertBefore(formContainer, document.getElementById('newQuote').nextSibling);
   }
   
+  function addQuote(quote, category) {
+    quotes.push({ quote: quote, category: category });
+  
+    const existingCategories = Array.from(document.getElementById('categoryFilter').options).map(option => option.value);
+  
+    if (!existingCategories.includes(category)) {
+      const option = document.createElement('option');
+      option.value = category;
+      option.textContent = category;
+      document.getElementById('categoryFilter').appendChild(option);
+    }
+  
+    filterQuotes(); // Refresh the filtered quotes list
+  }
+  
