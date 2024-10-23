@@ -75,4 +75,21 @@ function createAddQuoteForm() {
   
     filterQuotes(); // Refresh the filtered quotes list
   }
+  function filterQuotes() {
+    const selectedCategory = document.getElementById('categoryFilter').value;
+    
+    // Save the selected category to localStorage
+    localStorage.setItem('selectedCategory', selectedCategory);
+    
+    const filteredQuotes = quotes.filter(quote => selectedCategory === 'all' || quote.category === selectedCategory);
   
+    const quotesContainer = document.getElementById('quotesContainer');
+    quotesContainer.innerHTML = ''; // Clear previous quotes
+  
+    filteredQuotes.forEach(quoteObj => {
+      const quoteElement = document.createElement('p');
+      quoteElement.textContent = quoteObj.quote;
+      quotesContainer.appendChild(quoteElement);
+    });
+  }
+    
