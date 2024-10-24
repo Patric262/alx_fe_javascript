@@ -96,6 +96,20 @@ function createAddQuoteForm() {
       { text: "Life is what happens when you're busy making other plans.", category: "Life" },
       { text: "You miss 100% of the shots you don't take.", category: "Inspiration" }
   ];
-  
+  // Function to export the quotes array to a JSON file
+function exportToJsonFile() {
+  const dataStr = JSON.stringify(quotes, null, 2); // Convert quotes array to a JSON string
+  const dataBlob = new Blob([dataStr], { type: 'application/json' }); // Create a Blob object with the JSON string
+
+  const url = URL.createObjectURL(dataBlob); // Create a download URL for the Blob
+  const downloadAnchor = document.createElement('a'); // Create an anchor element
+
+  downloadAnchor.href = url;
+  downloadAnchor.download = 'quotes.json'; // Set the file name
+  downloadAnchor.click(); // Trigger the download
+
+  URL.revokeObjectURL(url); // Clean up the URL object
+}
+
   }
     
