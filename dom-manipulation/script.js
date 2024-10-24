@@ -91,5 +91,11 @@ function createAddQuoteForm() {
       quoteElement.textContent = quoteObj.quote;
       quotesContainer.appendChild(quoteElement);
     });
+    let quotes = JSON.parse(localStorage.getItem("quotes")) || [
+      { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
+      { text: "Life is what happens when you're busy making other plans.", category: "Life" },
+      { text: "You miss 100% of the shots you don't take.", category: "Inspiration" }
+  ];
+  
   }
     
