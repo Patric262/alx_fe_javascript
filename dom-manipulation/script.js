@@ -127,3 +127,76 @@ function importFromJsonFile(event) {
 
   fileReader.readAsText(file); // Read the file as text
 }
+// Function to populate categories in the dropdown
+function populateCategories() {
+  const categorySet = new Set(quotes.map(quote => quote.category));
+  const categoryFilter = document.getElementById('categoryFilter');
+  
+  // Clear the existing categories
+  categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+
+  categorySet.forEach(category => {
+    const option = document.createElement('option');
+    option.value = category;
+    option.textContent = category;
+    categoryFilter.appendChild(option);
+  });
+}
+// Function to filter and display quotes based on selected category
+function filterQuotes() {
+  const selectedCategory = document.getElementById('categoryFilter').value;
+
+  // Save the selected category to localStorage
+  localStorage.setItem('selectedCategory', selectedCategory);
+
+  const filteredQuotes = quotes.filter(quote => 
+    selectedCategory === 'all' || quote.category === selectedCategory
+  );
+
+  const quotesContainer = document.getElementById('quotesContainer');
+  quotesContainer.innerHTML = ''; // Clear the container
+
+  filteredQuotes.forEach(quoteObj => {
+    const quoteElement = document.createElement('p');
+    quoteElement.textContent = `"${quoteObj.text}" - ${quoteObj.category}`;
+    quotesContainer.appendChild(quoteElement);
+  });
+}
+
+// Function to restore the last selected filter on page load
+function restoreLastSelectedFilter() {
+  const savedCategory = localStorage.getItem('selectedCategory') || 'all';
+  document.getElementById('categoryFilter').value = savedCategory;
+  filterQuotes(); // Apply the saved filter
+}
+
+// Call this function when the page loads
+window.onload = function() {
+  populateCategories();  // Populate category options
+  restoreLastSelectedFilter(); // Restore and apply the saved filter
+};
+// Function to add a new quote
+function addQuote() {
+  const newQuoteText = document.getElementById('newQuoteText').value;
+  const newQuoteCategory = document.getElementById('newQuoteCategory').value;
+
+  if (newQuoteText && newQuoteCategory) {
+    quotes.push({ text: newQuoteText, category: newQuoteCategory });
+    saveQuotes(); // Save updated quotes to localStorage
+    populateCategories(); // Repopulate categories
+    alert("Quote added successfully!");
+  } else {
+    alert("Please enter both a quote and a category.");
+  }
+  // Save quotes to localStorage
+function saveQuotes() {
+  localStorage.setItem('quotes', JSON.stringify(quotes));
+}
+
+// Load quotes from localStorage on initialization
+let quotes = JSON.parse(localStorage.getItem('quotes')) || [
+  { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
+  { text: "Life is what happens when you're busy making other plans.", category: "Life" },
+  { text: "You miss 100% of the shots you don't take.", category: "Inspiration" }
+];
+}
