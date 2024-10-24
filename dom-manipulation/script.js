@@ -112,4 +112,18 @@ function exportToJsonFile() {
 }
 
   }
-    
+    // Function to import quotes from a JSON file
+function importFromJsonFile(event) {
+  const file = event.target.files[0]; // Get the selected file
+  const fileReader = new FileReader(); // Create a new FileReader object
+
+  // Define what to do once the file has been read
+  fileReader.onload = function(e) {
+      const importedQuotes = JSON.parse(e.target.result); // Parse the JSON data
+      quotes.push(...importedQuotes); // Add the imported quotes to the existing array
+      saveQuotes(); // Save the updated array to localStorage
+      alert('Quotes imported successfully!'); // Notify the user
+  };
+
+  fileReader.readAsText(file); // Read the file as text
+}
