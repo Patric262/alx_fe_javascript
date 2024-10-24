@@ -19,6 +19,14 @@
         <option value="all">All Categories</option>
       </select>
       <button onclick="exportToJsonFile()">Export Quotes to JSON</button>
-
+      <div id="quoteManagement">
+        <!-- Existing quote buttons like "Show Random Quote" -->
+        <button id="newQuote">Show New Quote</button>
+        
+        <!-- Add your new file input here for JSON import -->
+        <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+        
+        <!-- Existing buttons like "Add Quote" -->
+    </div>    
 </body>
 </html>
