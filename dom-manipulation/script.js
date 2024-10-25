@@ -199,4 +199,105 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
   { text: "Life is what happens when you're busy making other plans.", category: "Life" },
   { text: "You miss 100% of the shots you don't take.", category: "Inspiration" }
 ];
+const serverURL = "https://jsonplaceholder.typicode.com/posts"; // Use this for simulating quotes
+
+// Function to fetch quotes from the server
+async function fetchQuotesFromServer() {
+    try {
+        const response = await fetch(serverURL);
+        const serverQuotes = await response.json();
+        
+        // Assuming serverQuotes is an array of quote objects
+        console.log("Fetched quotes from server:", serverQuotes);
+
+        // Merge or replace local quotes with server quotes (you can choose the strategy)
+        resolveConflict(serverQuotes);
+    } catch (error) {
+        console.error("Error fetching quotes from server:", error);
+    }
+}
+// Function to periodically sync data with the server
+function startSyncing() {
+  setInterval(fetchQuotesFromServer, 60000); // Sync every 60 seconds
+}
+
+// Sync local quotes with the server (POST request)
+async function syncQuotesToServer(newQuote) {
+  try {
+      const response = await fetch(serverURL, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newQuote),
+      });
+      const result = await response.json();
+      console.log("Synced quote to server:", result);
+  } catch (error) {
+      console.error("Error syncing quote to server:", error);
+  }
+}
+// Function to periodically sync data with the server
+function startSyncing() {
+  setInterval(fetchQuotesFromServer, 60000); // Sync every 60 seconds
+}
+
+// Sync local quotes with the server (POST request)
+async function syncQuotesToServer(newQuote) {
+  try {
+      const response = await fetch(serverURL, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newQuote),
+      });
+      const result = await response.json();
+      console.log("Synced quote to server:", result);
+  } catch (error) {
+      console.error("Error syncing quote to server:", error);
+  }
+}
+// Function to resolve conflicts by merging server quotes with local quotes
+function resolveConflict(serverQuotes) {
+  // Compare server quotes with local quotes
+  // For simplicity, assume server data always takes precedence in case of conflicts
+
+  let conflictResolvedQuotes = [...quotes]; // Clone the local quotes
+
+  serverQuotes.forEach(serverQuote => {
+      const existingQuote = conflictResolvedQuotes.find(q => q.id === serverQuote.id);
+      if (!existingQuote) {
+          conflictResolvedQuotes.push(serverQuote); // Add server quote if it doesn't exist locally
+      } else {
+          // Update local quote with server version in case of conflict
+          Object.assign(existingQuote, serverQuote);
+      }
+  });
+
+  // Update the local quotes and refresh the display
+  quotes = conflictResolvedQuotes;
+  localStorage.setItem('quotes', JSON.stringify(quotes)); // Save resolved quotes to localStorage
+  filterQuotes(); // Refresh the displayed quotes
+}
+// Notify the user about conflict resolution
+function notifyUser(message) {
+  const notification = document.createElement('div');
+  notification.textContent = message;
+  notification.className = 'notification';
+  document.body.appendChild(notification);
+
+  // Automatically remove notification after 5 seconds
+  setTimeout(() => {
+      document.body.removeChild(notification);
+  }, 5000);
+}
+
+// Example of notifying the user after resolving conflicts
+function resolveConflict(serverQuotes) {
+  // Same conflict resolution logic as above...
+
+  notifyUser("Data synced with server. Conflicts resolved.");
+}
+
 }
