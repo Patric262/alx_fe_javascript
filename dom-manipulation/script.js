@@ -261,6 +261,9 @@ async function syncQuotes() {
 setInterval(function() {
   syncQuotes(); // Call the syncQuotes function periodically
 }, 300000);
+function syncQuotesWithServer() {
+  console.log("Quotes synced with server!");
+}
 
 
 }
