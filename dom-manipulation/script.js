@@ -234,6 +234,29 @@ async function postQuoteToServer(newQuote) {
       console.error("Error posting quote to the server:", error);
   }
 }
+async function syncQuotes() {
+  const serverURL = "https://jsonplaceholder.typicode.com/posts"; // Simulated server URL
+
+  try {
+      const response = await fetch(serverURL);
+      const serverQuotes = await response.json();
+
+      // Compare server quotes with local quotes
+      const localQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
+
+      // Merge quotes, with server quotes taking precedence in case of conflict
+      const mergedQuotes = [...localQuotes, ...serverQuotes.filter(serverQuote => {
+          return !localQuotes.some(localQuote => localQuote.text === serverQuote.text);
+      })];
+
+      // Save the merged quotes back to local storage
+      localStorage.setItem("quotes", JSON.stringify(mergedQuotes));
+
+      console.log("Quotes synced successfully.");
+  } catch (error) {
+      console.error("Error syncing quotes:", error);
+  }
+}
 
 
 }
