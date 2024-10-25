@@ -257,6 +257,10 @@ async function syncQuotes() {
       console.error("Error syncing quotes:", error);
   }
 }
+// Sync quotes every 5 minutes (300,000 milliseconds)
+setInterval(function() {
+  syncQuotes(); // Call the syncQuotes function periodically
+}, 300000);
 
 
 }
