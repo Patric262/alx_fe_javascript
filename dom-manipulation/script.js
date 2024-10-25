@@ -216,6 +216,24 @@ async function fetchQuotesFromServer() {
         console.error("Error fetching quotes from server:", error);
     }
 }
+async function postQuoteToServer(newQuote) {
+  const serverURL = "https://jsonplaceholder.typicode.com/posts"; // Simulated server URL
+  
+  try {
+      const response = await fetch(serverURL, {
+          method: "POST", // Define the HTTP method
+          headers: {
+              "Content-Type": "application/json" // Specify the type of content being sent
+          },
+          body: JSON.stringify(newQuote) // Convert the new quote object to JSON format
+      });
+
+      const data = await response.json();
+      console.log("Quote successfully posted:", data);
+  } catch (error) {
+      console.error("Error posting quote to the server:", error);
+  }
+}
 
 
 }
